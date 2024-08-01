@@ -13,14 +13,34 @@ struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 20
+    var grandTotal2: Double {
+        // calculate the grandTotal
+        let tS = Double(tipPercentage)
+        let tA = Double(checkAmount / 100 * tS)
+        let gT = Double(checkAmount + tA)
+        
+        return gT
+    }
+        
     
     let tipPercentages = [10, 15, 20, 25, 0]
     
+    var totalPerPerson: Double {
+        // calculate the total per person here
+        let peopleCount = Double(numberOfPeople + 2)
+        let tipSelection = Double(tipPercentage)
+        
+        let tipValue = checkAmount / 100 * tipSelection
+        let grandTotal = checkAmount + tipValue
+        let amountPerPerson = grandTotal / peopleCount
+        
+        return amountPerPerson
+    }
     
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section ("Total Check Amount"){
                     TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
                     Picker("Number of people", selection: $numberOfPeople) {
@@ -30,8 +50,20 @@ struct ContentView: View {
                     }
 //                    .pickerStyle(.navigationLink)
                 }
-                Section {
-                    Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                
+                Section ("Tip percentage"){
+                    Picker("Tip percentage", selection: $tipPercentage) {
+                        ForEach(tipPercentages, id: \.self) {
+                            Text($0, format: .percent)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    Text("Total including tip: \(grandTotal2, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
+                }
+                
+                Section ("Total for each person:") {
+                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
             .navigationTitle("WeSplit")
