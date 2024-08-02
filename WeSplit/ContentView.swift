@@ -61,7 +61,8 @@ struct ContentView: View {
                             Text($0, format: .percent)
                         }
                     }
-                    .pickerStyle(.segmented)
+//                    .pickerStyle(.segmented)
+                    .pickerStyle(.wheel)
                     
                     Text("Total including tip: \(grandTotal2, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
                 }
