@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 20
     @FocusState private var amountIsFocused: Bool
+    @State private var noTip = false
     
     var grandTotal2: Double {
         // calculate the grandTotal
@@ -69,6 +70,7 @@ struct ContentView: View {
                 
                 Section ("Total for each person:") {
                     Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        .foregroundColor(tipPercentage == 0 ? .red: .primary)
                 }
             }
             .navigationTitle("WeSplit")
